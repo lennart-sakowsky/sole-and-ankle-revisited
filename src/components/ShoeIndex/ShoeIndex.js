@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components/macro";
 
-import { THEME } from "../../constants";
+import { QUERIES } from "../../constants";
 
 import Breadcrumbs from "../Breadcrumbs";
 import Select from "../Select";
@@ -9,35 +9,45 @@ import Spacer from "../Spacer";
 import ShoeSidebar from "../ShoeSidebar";
 import ShoeGrid from "../ShoeGrid";
 
+const ShoeBreadcrumbs = () => {
+  return (
+    <Breadcrumbs>
+      <Breadcrumbs.Crumb href="/">Home</Breadcrumbs.Crumb>
+      <Breadcrumbs.Crumb href="/sale">Sale</Breadcrumbs.Crumb>
+      <Breadcrumbs.Crumb href="/sale/shoes">Shoes</Breadcrumbs.Crumb>
+    </Breadcrumbs>
+  );
+};
+
 const ShoeIndex = ({ sortId, setSortId }) => {
   return (
     <Wrapper>
       <MainColumn>
-        <Breadcrumbs>
-          <Breadcrumbs.Crumb href="/">Home</Breadcrumbs.Crumb>
-          <Breadcrumbs.Crumb href="/sale">Sale</Breadcrumbs.Crumb>
-          <Breadcrumbs.Crumb href="/sale/shoes">Shoes</Breadcrumbs.Crumb>
-        </Breadcrumbs>
         <Header>
-          <Title>Running</Title>
-          <Select
-            label="Sort"
-            value={sortId}
-            onChange={(ev) => setSortId(ev.target.value)}
-          >
-            <option value="newest">Newest Releases</option>
-            <option value="price">Price</option>
-          </Select>
+          <div>
+            <MobileBreadcrumbs>
+              <ShoeBreadcrumbs />
+            </MobileBreadcrumbs>
+            <Title>Running</Title>
+          </div>
+          <SortFilterWrapper>
+            <Select
+              label="Sort"
+              value={sortId}
+              onChange={(ev) => setSortId(ev.target.value)}
+            >
+              <option value="newest">Newest Releases</option>
+              <option value="price">Price</option>
+            </Select>
+          </SortFilterWrapper>
         </Header>
         <Spacer size={32} />
         <ShoeGrid />
       </MainColumn>
       <LeftColumn>
-        <Breadcrumbs>
-          <Breadcrumbs.Crumb href="/">Home</Breadcrumbs.Crumb>
-          <Breadcrumbs.Crumb href="/sale">Sale</Breadcrumbs.Crumb>
-          <Breadcrumbs.Crumb href="/sale/shoes">Shoes</Breadcrumbs.Crumb>
-        </Breadcrumbs>
+        <DesktopBreadcrumbs>
+          <ShoeBreadcrumbs />
+        </DesktopBreadcrumbs>
         <Spacer size={42} />
         <ShoeSidebar />
       </LeftColumn>
@@ -55,23 +65,13 @@ const Wrapper = styled.div`
 const LeftColumn = styled.div`
   flex-basis: 248px;
 
-  @media only screen and ${THEME.tabletAndDown} {
+  @media ${QUERIES.tabletAndSmaller} {
     display: none;
   }
 `;
 
 const MainColumn = styled.div`
   flex: 1;
-
-  & > nav {
-    display: none;
-  }
-
-  @media only screen and ${THEME.tabletAndDown} {
-    & > nav {
-      display: flex;
-    }
-  }
 `;
 
 const Header = styled.header`
@@ -79,20 +79,32 @@ const Header = styled.header`
   justify-content: space-between;
   align-items: baseline;
 
-  @media only screen and ${THEME.phoneAndDown} {
-    & > label {
-      display: none;
-    }
+  @media ${QUERIES.tabletAndSmaller} {
+    align-items: flex-end;
+  }
+`;
+
+const DesktopBreadcrumbs = styled.div`
+  @media ${QUERIES.tabletAndSmaller} {
+    display: none;
+  }
+`;
+const MobileBreadcrumbs = styled.div`
+  display: none;
+  @media ${QUERIES.tabletAndSmaller} {
+    display: revert;
+  }
+`;
+
+const SortFilterWrapper = styled.div`
+  @media ${QUERIES.phoneAndSmaller} {
+    display: none;
   }
 `;
 
 const Title = styled.h2`
   font-size: 1.5rem;
   font-weight: var(--weight-medium);
-
-  @media only screen and ${THEME.tableAndDown} {
-    position: relative;
-  }
 `;
 
 export default ShoeIndex;

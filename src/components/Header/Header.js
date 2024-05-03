@@ -2,8 +2,8 @@ import React from "react";
 import styled from "styled-components/macro";
 import UnstyledButton from "../UnstyledButton";
 import Icon from "../Icon";
-
-import { THEME } from "../../constants";
+import VisuallyHidden from "../VisuallyHidden";
+import { QUERIES } from "../../constants";
 import Logo from "../Logo";
 import SuperHeader from "../SuperHeader";
 import MobileMenu from "../MobileMenu";
@@ -11,40 +11,36 @@ import MobileMenu from "../MobileMenu";
 const Header = () => {
   const [showMobileMenu, setShowMobileMenu] = React.useState(false);
 
-  // For our mobile hamburger menu, we'll want to use a button
-  // with an onClick handler, something like this:
-  //
-  // <button onClick={() => setShowMobileMenu(true)}>
-
   return (
     <header>
       <SuperHeader />
       <MainHeader>
-        <Side>
+        <LogoWrapper>
           <Logo />
-        </Side>
-        <Nav>
+        </LogoWrapper>
+        <DesktopNav>
           <NavLink href="/sale">Sale</NavLink>
           <NavLink href="/new">New&nbsp;Releases</NavLink>
           <NavLink href="/men">Men</NavLink>
           <NavLink href="/women">Women</NavLink>
           <NavLink href="/kids">Kids</NavLink>
           <NavLink href="/collections">Collections</NavLink>
+        </DesktopNav>
+        <MobileActions>
+          <ShoppingBagButton>
+            <Icon id="shopping-bag" />
+            <VisuallyHidden>Open cart</VisuallyHidden>
+          </ShoppingBagButton>
           <UnstyledButton>
-            <Icon id="shopping-bag" strokeWidth={2} />
+            <Icon id="search" />
+            <VisuallyHidden>Search</VisuallyHidden>
           </UnstyledButton>
-          <UnstyledButton>
-            <Icon id="search" strokeWidth={2} />
+          <UnstyledButton onClick={() => setShowMobileMenu(true)}>
+            <Icon id="menu" />
+            <VisuallyHidden>Open menu</VisuallyHidden>
           </UnstyledButton>
-          <UnstyledButton>
-            <Icon
-              id="menu"
-              strokeWidth={2}
-              onClick={() => setShowMobileMenu(!showMobileMenu)}
-            />
-          </UnstyledButton>
-        </Nav>
-        <Side />
+        </MobileActions>
+        <Filler />
       </MainHeader>
 
       <MobileMenu
@@ -59,40 +55,42 @@ const MainHeader = styled.div`
   display: flex;
   align-items: baseline;
   padding: 18px 32px;
-  height: 72px;
   border-bottom: 1px solid var(--color-gray-300);
+  overflow: auto;
 
-  @media only screen and ${THEME.tabletAndDown} {
+  @media ${QUERIES.tabletAndSmaller} {
     justify-content: space-between;
-    padding: 16px 20px;
+    align-items: center;
+    border-top: 4px solid var(--color-gray-900);
+  }
 
-    & > div:last-of-type {
-      display: none;
-    }
+  @media ${QUERIES.phoneAndSmaller} {
+    padding-left: 16px;
+    padding-right: 16px;
   }
 `;
 
-const Nav = styled.nav`
+const DesktopNav = styled.nav`
   display: flex;
-  gap: clamp(1rem, 6.3vw - 2.5rem, 3rem);
+  gap: clamp(1rem, 9.2vw - 4.5rem, 3.5rem);
   margin: 0px 48px;
 
-  > button {
+  @media ${QUERIES.tabletAndSmaller} {
     display: none;
-  }
-
-  @media only screen and ${THEME.tabletAndDown} {
-    align-self: center;
-    gap: 16px;
-    margin: 0;
-    > button {
-      display: block;
-    }
   }
 `;
 
-const Side = styled.div`
-  flex: 1;
+const MobileActions = styled.div`
+  display: none;
+
+  @media ${QUERIES.tabletAndSmaller} {
+    display: flex;
+    gap: 32px;
+  }
+
+  @media ${QUERIES.phoneAndSmaller} {
+    gap: 16px;
+  }
 `;
 
 const NavLink = styled.a`
@@ -106,7 +104,26 @@ const NavLink = styled.a`
     color: var(--color-secondary);
   }
 
-  @media only screen and ${THEME.tabletAndDown} {
+  @media ${QUERIES.tabletAndSmaller} {
+    display: none;
+  }
+`;
+
+const LogoWrapper = styled.div`
+  flex: 1;
+
+  @media ${QUERIES.tabletAndSmaller} {
+    flex: revert;
+  }
+`;
+
+const ShoppingBagButton = styled(UnstyledButton)`
+  transform: translateX(-2px);
+`;
+
+const Filler = styled.div`
+  flex: 1;
+  @media ${QUERIES.tabletAndSmaller} {
     display: none;
   }
 `;

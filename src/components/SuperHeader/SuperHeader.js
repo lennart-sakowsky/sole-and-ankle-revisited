@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components/macro";
-import { THEME } from "../../constants";
+import { QUERIES } from "../../constants";
 
 import SearchInput from "../SearchInput";
 import UnstyledButton from "../UnstyledButton";
@@ -35,7 +35,7 @@ const Wrapper = styled.div`
   padding-left: 32px;
   padding-right: 32px;
 
-  @media only screen and ${THEME.tabletAndDown} {
+  @media ${QUERIES.tabletAndSmaller} {
     display: none;
   }
 `;
@@ -56,7 +56,7 @@ const HelpLink = styled.a`
 `;
 
 const MobileDecorativeElement = styled.div`
-  @media only screen and ${THEME.tabletAndDown} {
+  @media ${QUERIES.tabletAndSmaller} {
     display: block;
     background-color: var(--color-gray-900);
     height: 4px;

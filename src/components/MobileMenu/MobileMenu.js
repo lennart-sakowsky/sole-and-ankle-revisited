@@ -4,27 +4,30 @@ import styled from "styled-components/macro";
 import { DialogOverlay, DialogContent } from "@reach/dialog";
 import UnstyledButton from "../UnstyledButton";
 import Icon from "../Icon";
+import VisuallyHidden from "../VisuallyHidden";
 
 const MobileMenu = ({ isOpen, onDismiss }) => {
   return (
     <Overlay isOpen={isOpen} onDismiss={onDismiss}>
-      <CloseButton>
-        <Icon id="close" strokeWidth={2} onClick={onDismiss} />
-      </CloseButton>
-      <Content>
-        <nav>
-          <a href="/sale">Sale</a>
-          <a href="/new">New&nbsp;Releases</a>
-          <a href="/men">Men</a>
-          <a href="/women">Women</a>
-          <a href="/kids">Kids</a>
-          <a href="/collections">Collections</a>
-        </nav>
-        <footer>
+      <Content aria-label="Menu">
+        <CloseButton onClick={onDismiss}>
+          <Icon id="close" />
+          <VisuallyHidden>Dismiss menu</VisuallyHidden>
+        </CloseButton>
+        <Filler />
+        <Nav>
+          <NavLink href="/sale">Sale</NavLink>
+          <NavLink href="/new">New&nbsp;Releases</NavLink>
+          <NavLink href="/men">Men</NavLink>
+          <NavLink href="/women">Women</NavLink>
+          <NavLink href="/kids">Kids</NavLink>
+          <NavLink href="/collections">Collections</NavLink>
+        </Nav>
+        <Footer>
           <a href="/terms">Terms and Conditions</a>
           <a href="/privacy">Privacy Policy</a>
           <a href="/contact">Contact Us</a>
-        </footer>
+        </Footer>
       </Content>
     </Overlay>
   );
@@ -39,57 +42,61 @@ const Overlay = styled(DialogOverlay)`
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  background: hsl(0deg 0% 0% / 0.5);
+  background: var(--color-backdrop);
 `;
 
 const Content = styled(DialogContent)`
   display: flex;
-  flex-flow: column nowrap;
-  justify-content: flex-end;
-  gap: 180px;
-  height: 100vh;
-  width: 80vw;
+  flex-direction: column;
+  height: 100%;
+  width: 300px;
   padding: 32px;
   background-color: var(--color-white);
 
   a {
     text-decoration: none;
   }
+`;
 
-  nav {
-    display: flex;
-    flex-flow: column nowrap;
-    gap: 22px;
+const Nav = styled.nav`
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+`;
 
-    > a {
-      font-size: 1.125rem;
-      font-weight: 600;
-      color: var(--color-gray-900);
-      text-transform: uppercase;
-
-      &:first-of-type {
-        color: var(--color-secondary);
-      }
-    }
+const NavLink = styled.a`
+  color: var(--color-gray-900);
+  font-weight: var(--weight-medium);
+  font-size: 1.125rem;
+  text-transform: uppercase;
+  &:first-of-type {
+    color: var(--color-secondary);
   }
+`;
 
-  footer {
-    display: flex;
-    flex-flow: column nowrap;
-    gap: 22px;
+const Filler = styled.div`
+  flex: 1;
+`;
 
-    > a {
-      font-size: 0.875rem;
-      font-weight: 500;
-      color: var(--color-gray-700);
-    }
+const Footer = styled.footer`
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 9px;
+
+  > a {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--color-gray-700);
   }
 `;
 
 const CloseButton = styled(UnstyledButton)`
   position: absolute;
-  top: 26px;
-  right: 16px;
+  top: 10px;
+  right: 0;
+  padding: 16px;
 `;
 
 export default MobileMenu;
